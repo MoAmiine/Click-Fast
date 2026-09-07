@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Click Fast! - Prototype</title>
+</head>
+<body>
+    <!-- Vue Accueil -->
+    <section id="view-home">
+        <h1>Click Fast!</h1>
+        <button id="btn-go-config">Jouer</button>
+    </section>
+
+    <!-- Vue Configuration -->
+    <section id="view-config" style="display: none;">
+        <input type="text" id="pseudo" minlength="2" maxlength="20" required>
+        <!-- Sélecteurs pour Mode, Durée, et Difficulté à ajouter ici -->
+        <button id="btn-start-game">Lancer la partie</button>
+    </section>
+
+    <!-- Vue Arène de jeu -->
+    <section id="view-game" style="display: none;">
+        <!-- L'arène est contrainte à 500x500 px sur ordinateur -->
+        <div id="arena" style="width: 500px; height: 500px; position: relative; background: #eee;">
+            <div id="target" style="position: absolute; cursor: pointer;"></div>
+        </div>
+    </section>
+
+    <!-- Vue Résultats -->
+    <section id="view-results" style="display: none;"></section>
+
+    <!-- Vue Historique -->
+    <section id="view-history" style="display: none;"></section>
+
+    <script src="main.js"></script>
+</body>
+</html>
