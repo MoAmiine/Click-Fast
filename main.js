@@ -37,7 +37,7 @@ function game() {
  const countdown = setInterval(() => {
   if (durationValue <= 0) {
     clearInterval(countdown);
-    minuteur.innerHTML = `time's up`
+    finishgame();
   } else {
     minuteur.innerHTML = `${durationValue} seconds remaining...`
     durationValue--;
@@ -46,6 +46,7 @@ function game() {
 }
 
 function finishgame(){
-    
+    document.getElementById('view-game').style.display = 'none';
+    document.getElementById('view-results').style.display = 'block'
 }
 
