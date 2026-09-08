@@ -28,6 +28,8 @@ btnstartgame.addEventListener('click', (event) => {
 
     game();
 });
+let minuteur = document.getElementById('countdown')
+
 
 function game() {
     let durationValue = timeSelect.value;
@@ -35,11 +37,15 @@ function game() {
  const countdown = setInterval(() => {
   if (durationValue <= 0) {
     clearInterval(countdown);
-    console.log("Time's up!");
+    minuteur.innerHTML = `time's up`
   } else {
-    console.log(`${durationValue} seconds remaining...`);
+    minuteur.innerHTML = `${durationValue} seconds remaining...`
     durationValue--;
   }
 }, 1000);   
+}
+
+function finishgame(){
+    
 }
 
