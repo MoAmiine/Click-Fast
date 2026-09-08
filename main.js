@@ -43,9 +43,26 @@ function game() {
     let count = 0
     target.addEventListener('click', () => {
         count++ 
-        document.getElementById('score').innerText = `${count}`
+        document.getElementById('score').innerText = `Tu as fais ${count} clicks dans ${timeSelect.value} secs`
+        moveTarget()
     })
 }
+function moveTarget() {
+        const arenaWidth = arena.clientWidth;  // 500px
+        const arenaHeight = arena.clientHeight; // 500px
+        
+        const targetWidth = target.clientWidth;
+        const targetHeight = target.clientHeight;
+
+        const maxX = arenaWidth - targetWidth;
+        const maxY = arenaHeight - targetHeight;
+
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        target.style.left = `${randomX}px`;
+        target.style.top = `${randomY}px`;
+    }
 
 function finishgame(){
     document.getElementById('view-game').style.display = 'none';
