@@ -20,9 +20,6 @@ btnstartgame.addEventListener('click', (event) => {
         alert("Veuillez saisir un pseudo valide (entre 2 et 20 caractères).");
         return;
     }
-
-
-
     document.getElementById('view-config').style.display = 'none';
     document.getElementById('view-game').style.display = 'block';
 
@@ -33,7 +30,7 @@ let minuteur = document.getElementById('countdown')
 
 function game() {
     let durationValue = timeSelect.value;
-
+    let target = document.getElementById('target')
  const countdown = setInterval(() => {
   if (durationValue <= 0) {
     clearInterval(countdown);
@@ -43,10 +40,18 @@ function game() {
     durationValue--;
   }
 }, 1000);   
+    let count = 0
+    target.addEventListener('click', () => {
+        count++ 
+        document.getElementById('score').innerText = `${count}`
+    })
 }
 
 function finishgame(){
     document.getElementById('view-game').style.display = 'none';
     document.getElementById('view-results').style.display = 'block'
+
 }
+
+
 
