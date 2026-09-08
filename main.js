@@ -31,40 +31,51 @@ let minuteur = document.getElementById('countdown')
 function game() {
     let durationValue = timeSelect.value;
     let target = document.getElementById('target')
- const countdown = setInterval(() => {
-  if (durationValue <= 0) {
-    clearInterval(countdown);
-    finishgame();
-  } else {
-    minuteur.innerHTML = `${durationValue} seconds remaining...`
-    durationValue--;
-  }
-}, 1000);   
+    const countdown = setInterval(() => {
+        if (durationValue <= 0) {
+            clearInterval(countdown);
+            finishgame();
+        } else {
+            minuteur.innerHTML = `${durationValue} seconds remaining...`
+            durationValue--;
+        }
+    }, 1000);
     let count = 0
     target.addEventListener('click', () => {
-        count++ 
-        document.getElementById('score').innerText = `Tu as fais ${count} clicks dans ${timeSelect.value} secs`
+        count++
+        const temps = parseInt(timeSelect.value, 10);
+
+        const cps = (count / temps).toFixed(2);
+
+        document.getElementById('score').innerHTML = `
+    <div style="color: #fff; font-size: 1.5rem; margin-bottom: 10px;">
+        SCORE FINAL : <span style="color: var(--primary-color); font-size: 2.5rem;">${count}</span> HITS
+    </div>
+    <div style="font-size: 1.2rem; color: #94a3b8;">
+        ⏱️ Chrono : ${temps}s &nbsp;|&nbsp; ⚡ Vitesse : ${cps} hits/sec
+    </div>
+`;
         moveTarget()
     })
 }
 function moveTarget() {
-        const arenaWidth = arena.clientWidth;  // 500px
-        const arenaHeight = arena.clientHeight; // 500px
-        
-        const targetWidth = target.clientWidth;
-        const targetHeight = target.clientHeight;
+    const arenaWidth = arena.clientWidth;
+    const arenaHeight = arena.clientHeight;
 
-        const maxX = arenaWidth - targetWidth;
-        const maxY = arenaHeight - targetHeight;
+    const targetWidth = target.clientWidth;
+    const targetHeight = target.clientHeight;
 
-        const randomX = Math.floor(Math.random() * maxX);
-        const randomY = Math.floor(Math.random() * maxY);
+    const maxX = arenaWidth - targetWidth;
+    const maxY = arenaHeight - targetHeight;
 
-        target.style.left = `${randomX}px`;
-        target.style.top = `${randomY}px`;
-    }
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
 
-function finishgame(){
+    target.style.left = `${randomX}px`;
+    target.style.top = `${randomY}px`;
+}
+
+function finishgame() {
     document.getElementById('view-game').style.display = 'none';
     document.getElementById('view-results').style.display = 'block'
 
