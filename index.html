@@ -14,8 +14,12 @@
     <!-- Vue Configuration -->
     <section id="view-config" style="display: none;">
         <input type="text" id="pseudo" minlength="2" maxlength="20" required>
-        <!-- Sélecteurs pour Mode, Durée, et Difficulté à ajouter ici -->
-        <button id="btn-start-game">Lancer la partie</button>
+        <select id="select-time">
+            <option value="10">10 secondes</option>
+            <option value="20">20 secondes</option>
+            <option value="30">30 secondes</option>
+        </select>
+        <button type="button" id="btn-start-game">Lancer la partie</button>
     </section>
 
     <!-- Vue Arène de jeu -->
