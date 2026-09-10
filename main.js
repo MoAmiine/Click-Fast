@@ -56,8 +56,17 @@ function game() {
     </div>
 `;
         moveTarget()
+
+        let misses = 0
+        if(arena){
+            arena.addEventListener('click', () => {
+                misses++
+            })
+        }
     })
 }
+const target = document.getElementById('target');
+const arena = document.getElementById('arena');
 function moveTarget() {
     const arenaWidth = arena.clientWidth;
     const arenaHeight = arena.clientHeight;
@@ -68,8 +77,8 @@ function moveTarget() {
     const maxX = arenaWidth - targetWidth;
     const maxY = arenaHeight - targetHeight;
 
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
+    var randomX = Math.floor(Math.random() * maxX);
+    var randomY = Math.floor(Math.random() * maxY);
 
     target.style.left = `${randomX}px`;
     target.style.top = `${randomY}px`;
@@ -80,6 +89,8 @@ function finishgame() {
     document.getElementById('view-results').style.display = 'block'
 
 }
+
+
 
 
 
