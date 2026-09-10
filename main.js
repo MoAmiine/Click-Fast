@@ -1,5 +1,6 @@
 let btngoconfig = document.getElementById('btn-go-config');
 
+
 btngoconfig.addEventListener('click', () => {
     document.getElementById('view-home').style.display = 'none';
     document.getElementById('view-config').style.display = 'block';
@@ -25,7 +26,7 @@ btnstartgame.addEventListener('click', (event) => {
 });
 
 let minuteur = document.getElementById('countdown');
-const target = document.getElementById('target');
+const cible = document.getElementById('target');
 const arena = document.getElementById('arena');
 
 let count = 0;
@@ -37,8 +38,7 @@ function game() {
     count = 0;
     misses = 0;
 
-    moveTarget();
-
+    
     const countdown = setInterval(() => {
         if (durationValue <= 0) {
             clearInterval(countdown);
@@ -49,8 +49,10 @@ function game() {
         }
     }, 1000);
 
-    target.onclick = (event) => {
+    cible.onclick = (event) => {
         event.stopPropagation(); 
+        moveTarget();
+        count++
     };
 
     arena.onclick = () => {
@@ -62,8 +64,8 @@ function moveTarget() {
     const arenaWidth = arena.clientWidth;
     const arenaHeight = arena.clientHeight;
 
-    const targetWidth = target.clientWidth;
-    const targetHeight = target.clientHeight;
+    const targetWidth = cible.clientWidth;
+    const targetHeight = cible.clientHeight;
 
     const maxX = arenaWidth - targetWidth;
     const maxY = arenaHeight - targetHeight;
@@ -71,8 +73,8 @@ function moveTarget() {
     let randomX = Math.floor(Math.random() * maxX);
     let randomY = Math.floor(Math.random() * maxY);
 
-    target.style.left = `${randomX}px`;
-    target.style.top = `${randomY}px`;
+    cible.style.left = `${randomX}px`;
+    cible.style.top = `${randomY}px`;
 }
 
 function finishgame() {
