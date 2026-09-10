@@ -1,5 +1,3 @@
-
-
 let btngoconfig = document.getElementById('btn-go-config');
 
 btngoconfig.addEventListener('click', () => {
@@ -25,48 +23,41 @@ btnstartgame.addEventListener('click', (event) => {
 
     game();
 });
-let minuteur = document.getElementById('countdown')
 
+let minuteur = document.getElementById('countdown');
+const target = document.getElementById('target');
+const arena = document.getElementById('arena');
+
+let count = 0;
+let misses = 0;
 
 function game() {
     let durationValue = timeSelect.value;
-    let target = document.getElementById('target')
+    
+    count = 0;
+    misses = 0;
+
+    moveTarget();
+
     const countdown = setInterval(() => {
         if (durationValue <= 0) {
             clearInterval(countdown);
             finishgame();
         } else {
-            minuteur.innerHTML = `${durationValue} seconds remaining...`
+            minuteur.innerHTML = `${durationValue} seconds remaining...`;
             durationValue--;
         }
     }, 1000);
-    let count = 0
-    target.addEventListener('click', () => {
-        count++
-        const temps = parseInt(timeSelect.value, 10);
 
-        const cps = (count / temps).toFixed(2);
+    target.onclick = (event) => {
+        event.stopPropagation(); 
+    };
 
-        document.getElementById('score').innerHTML = `
-    <div style="color: #fff; font-size: 1.5rem; margin-bottom: 10px;">
-        SCORE FINAL : <span style="color: var(--primary-color); font-size: 2.5rem;">${count}</span> HITS
-    </div>
-    <div style="font-size: 1.2rem; color: #94a3b8;">
-        ⏱️ Chrono : ${temps}s &nbsp;|&nbsp; ⚡ Vitesse : ${cps} hits/sec
-    </div>
-`;
-        moveTarget()
-
-        let misses = 0
-        if(arena){
-            arena.addEventListener('click', () => {
-                misses++
-            })
-        }
-    })
+    arena.onclick = () => {
+        misses++;
+    };
 }
-const target = document.getElementById('target');
-const arena = document.getElementById('arena');
+
 function moveTarget() {
     const arenaWidth = arena.clientWidth;
     const arenaHeight = arena.clientHeight;
@@ -77,8 +68,8 @@ function moveTarget() {
     const maxX = arenaWidth - targetWidth;
     const maxY = arenaHeight - targetHeight;
 
-    var randomX = Math.floor(Math.random() * maxX);
-    var randomY = Math.floor(Math.random() * maxY);
+    let randomX = Math.floor(Math.random() * maxX);
+    let randomY = Math.floor(Math.random() * maxY);
 
     target.style.left = `${randomX}px`;
     target.style.top = `${randomY}px`;
@@ -86,11 +77,34 @@ function moveTarget() {
 
 function finishgame() {
     document.getElementById('view-game').style.display = 'none';
-    document.getElementById('view-results').style.display = 'block'
+    document.getElementById('view-results').style.display = 'block';
 
+    const temps = parseInt(timeSelect.value, 10);
+    const cps = (count / temps).toFixed(2);
+    
+    let totalscore = count + misses;
+    let precision = 0;
+
+    if (totalscore > 0) {
+        precision = ((count / totalscore) * 100).toFixed(1);
+    }
+
+    document.getElementById('score').innerHTML = `
+        <div style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">
+            SCORE FINAL : <span style="color: var(--primary-color); font-size: 3rem; text-shadow: var(--primary-glow);">${count}</span> HITS
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; display: inline-block; text-align: left; margin-bottom: 20px;">
+            <div style="color: var(--danger-color); font-size: 1.2rem; margin-bottom: 5px;">
+                ❌ Clics ratés : ${misses}
+            </div>
+            <div style="color: #10b981; font-size: 1.2rem;">
+                🎯 Précision : ${precision}%
+            </div>
+        </div>
+
+        <div style="font-size: 1.1rem; color: #94a3b8;">
+            ⏱️ Durée : ${temps}s &nbsp;|&nbsp; ⚡ Vitesse : ${cps} hits/sec
+        </div>
+    `;
 }
-
-
-
-
-
