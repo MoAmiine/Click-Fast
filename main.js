@@ -1,4 +1,16 @@
 let btngoconfig = document.getElementById('btn-go-config');
+let btnstartgame = document.getElementById('btn-start-game');
+let btnReplay = document.getElementById('btn-replay');
+const pseudoInput = document.getElementById('pseudo');
+const timeSelect = document.getElementById('select-time');
+let pseudoValue = "";
+const modeSelect = document.getElementById('select-mode');
+let currentMode = "classique";
+const btnGoHistory = document.getElementById('btn-go-history');
+const btnBackHome = document.getElementById('btn-back-home');
+const btnPurgeHistory = document.getElementById('btn-purge-history');
+const historyContainer = document.getElementById('history-container');
+
 
 
 btngoconfig.addEventListener('click', () => {
@@ -6,20 +18,83 @@ btngoconfig.addEventListener('click', () => {
     document.getElementById('view-config').style.display = 'block';
 });
 
-let btnstartgame = document.getElementById('btn-start-game');
-const pseudoInput = document.getElementById('pseudo');
-const timeSelect = document.getElementById('select-time');
-let pseudoValue = "";
-const modeSelect = document.getElementById('select-mode');
-let currentMode = "classique";
 
-let btnReplay = document.getElementById('btn-replay');
 if (btnReplay) {
     btnReplay.addEventListener('click', () => {
         document.getElementById('view-results').style.display = 'none';
         document.getElementById('view-config').style.display = 'block';
     });
 }
+
+if (btnGoHistory) {
+    btnGoHistory.addEventListener('click', () => {
+        document.getElementById('view-home').style.display = 'none';
+        document.getElementById('view-history').style.display = 'block';
+        renderHistory();
+    });
+}
+
+if (btnBackHome) {
+    btnBackHome.addEventListener('click', () => {
+        document.getElementById('view-history').style.display = 'none';
+        document.getElementById('view-home').style.display = 'block';
+    });
+}
+
+if (btnPurgeHistory) {
+    btnPurgeHistory.addEventListener('click', () => {
+        if (confirm("Voulez-vous vraiment supprimer tout l'historique ?")) {
+            localStorage.removeItem('clickFast.history');
+            renderHistory();
+        }
+    });
+}
+
+function renderHistory() {
+    let history = [];
+
+    try {
+        const savedHistory = localStorage.getItem('clickFast.history');
+        if (savedHistory) {
+            history = JSON.parse(savedHistory);
+        }
+    } catch (e) {
+        history = [];
+    }
+
+    if (history.length === 0) {
+        historyContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">Aucune partie enregistrée pour le moment.</p>';
+        return;
+    }
+
+    let html = '';
+    history.forEach((session, index) => {
+        let precisionText = "";
+        if (session.mode === "precision") {
+            precisionText = ` | Précision: <span style="color: #10b981;">${session.precision}%</span>`;
+        }
+
+        html += `
+            <div style="background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <div style="display: flex; justify-content: space-between; color: #cbd5e1; margin-bottom: 5px;">
+                    <strong>#${index + 1} - ${session.pseudo}</strong>
+                    <span style="font-size: 0.85rem; color: #94a3b8;">${session.date}</span>
+                </div>
+                <div style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase;">
+                    Mode: ${session.mode} | Diff: ${session.diff} | Temps: ${session.temps}s
+                </div>
+                <div style="color: #fff; margin-top: 8px; font-size: 1.1rem;">
+                    Score : <span style="color: var(--primary-color); font-weight: bold;">${session.score}</span> 
+                    ${precisionText}
+                </div>
+            </div>
+        `;
+    });
+
+    historyContainer.innerHTML = html;
+}
+
+
 const difficultySelect = document.getElementById('select-difficulty');
 let currentDifficulty = "moyenne";
 
@@ -139,7 +214,7 @@ function finishgame() {
     if (count > ancienRecord) {
         isNewRecord = true;
         records[recordKey] = count;
-        localStorage.setItem('clickFast.records', JSON.stringify(records)); 
+        localStorage.setItem('clickFast.records', JSON.stringify(records));
     }
 
     let precisionStatsHTML = "";
@@ -190,6 +265,40 @@ function finishgame() {
     if (isNewRecord) {
         document.getElementById('record-banner').style.display = 'block';
     }
+
+    let history = [];
+    try {
+        const savedHistory = localStorage.getItem('clickFast.history');
+        if (savedHistory) {
+            history = JSON.parse(savedHistory);
+        }
+    } catch (e) {
+        // En cas d'anomalie, le tableau est réinitialisé à vide[cite: 1]
+        console.error("Erreur historique, réinitialisation.");
+        history = [];
+    }
+
+    // Création de l'objet contenant les statistiques de la partie actuelle
+    const sessionData = {
+        date: new Date().toLocaleDateString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+        pseudo: pseudoValue,
+        mode: currentMode,
+        diff: currentDifficulty,
+        temps: temps,
+        score: count,
+        precision: precision
+    };
+
+    // unshift() ajoute la nouvelle partie tout au début du tableau
+    history.unshift(sessionData);
+
+    // Si on dépasse 20 sessions, pop() supprime la plus ancienne (la 21e) à la fin du tableau[cite: 1]
+    if (history.length > 20) {
+        history.pop();
+    }
+
+    // Sauvegarde finale dans le navigateur
+    localStorage.setItem('clickFast.history', JSON.stringify(history));
 }
 
 
