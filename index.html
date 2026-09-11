@@ -150,6 +150,9 @@
         <h1>CLICK FAST!</h1>
         <p style="margin-bottom: 30px; color: #94a3b8;">Testez vos réflexes et votre précision.</p>
         <button type="button" id="btn-go-config">Jouer</button>
+        <button type="button" id="btn-go-history"
+            style="background: transparent; border: 1px solid var(--primary-color); margin-top: 15px;">Voir
+            l'Historique</button>
     </section>
 
     <section id="view-config" style="display: none;">
@@ -161,7 +164,7 @@
             <option value="20">20 secondes</option>
             <option value="30">30 secondes</option>
         </select>
-        
+
         <select id="select-mode">
             <option value="classique" selected>Mode Classique</option>
             <option value="precision">Mode Précision</option>
@@ -190,8 +193,18 @@
         <button type="button" id="btn-replay" style="margin-top: 20px;">Rejouer</button>
     </section>
 
-    <section id="view-history" style="display: none;"></section>
+    <section id="view-history" style="display: none;">
+        <h2>Dernières Sessions</h2>
 
+        <div id="history-container"
+            style="margin: 20px 0; max-height: 300px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px;">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="button" id="btn-back-home" style="background: #64748b;">Retour</button>
+            <button type="button" id="btn-purge-history" style="background: var(--danger-color);">Purger</button>
+        </div>
+    </section>
     <script src="main.js"></script>
 </body>
 
