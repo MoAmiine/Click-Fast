@@ -10,14 +10,18 @@ let btnstartgame = document.getElementById('btn-start-game');
 const pseudoInput = document.getElementById('pseudo');
 const timeSelect = document.getElementById('select-time');
 let pseudoValue = "";
+const modeSelect = document.getElementById('select-mode');
+let currentMode = "classique";
 
 let btnReplay = document.getElementById('btn-replay');
-    if (btnReplay) {
-        btnReplay.addEventListener('click', () => {
-            document.getElementById('view-results').style.display = 'none';
-            document.getElementById('view-config').style.display = 'block';
-        });
-    }
+if (btnReplay) {
+    btnReplay.addEventListener('click', () => {
+        document.getElementById('view-results').style.display = 'none';
+        document.getElementById('view-config').style.display = 'block';
+    });
+}
+const difficultySelect = document.getElementById('select-difficulty');
+let currentDifficulty = "moyenne";
 
 btnstartgame.addEventListener('click', (event) => {
     event.preventDefault();
@@ -28,6 +32,10 @@ btnstartgame.addEventListener('click', (event) => {
         alert("Veuillez saisir un pseudo valide (entre 2 et 20 caractères).");
         return;
     }
+
+    currentDifficulty = difficultySelect.value;
+    currentMode = modeSelect.value;
+
     document.getElementById('view-config').style.display = 'none';
     document.getElementById('view-game').style.display = 'block';
 
@@ -43,11 +51,21 @@ let misses = 0;
 
 function game() {
     let durationValue = timeSelect.value;
-    
+
     count = 0;
     misses = 0;
 
-    
+    let tailleCible = 60;
+
+    if (currentDifficulty === "facile") {
+        tailleCible = 80;
+    } else if (currentDifficulty === "difficile") {
+        tailleCible = 40;
+    }
+
+    cible.style.width = `${tailleCible}px`;
+    cible.style.height = `${tailleCible}px`;
+
     const countdown = setInterval(() => {
         if (durationValue <= 0) {
             clearInterval(countdown);
@@ -59,13 +77,15 @@ function game() {
     }, 1000);
 
     cible.onclick = (event) => {
-        event.stopPropagation(); 
+        event.stopPropagation();
         moveTarget();
         count++
     };
 
     arena.onclick = () => {
-        misses++;
+        if (currentMode === "precision") {
+            misses++;
+        }
     };
 }
 
@@ -92,7 +112,7 @@ function finishgame() {
 
     const temps = parseInt(timeSelect.value, 10);
     const cps = (count / temps).toFixed(2);
-    
+
     let totalscore = count + misses;
     let precision = 0;
 
@@ -100,10 +120,23 @@ function finishgame() {
         precision = ((count / totalscore) * 100).toFixed(1); // Formule officielle
     }
 
+    let precisionStatsHTML = "";
+
+    if (currentMode === "precision") {
+        precisionStatsHTML = `
+            <div style="display: flex; justify-content: space-between; text-align: left; font-size: 1.1rem;">
+                <div style="color: #f43f5e;">❌ Ratés : <strong>${misses}</strong></div>
+                <div style="color: #10b981;">🎯 Précision : <strong>${precision}%</strong></div>
+            </div>
+            <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;">
+        `;
+    }
+
     document.getElementById('score').innerHTML = `
         <div style="margin-bottom: 30px;">
             <div style="color: #fff; font-size: 1.5rem; font-family: 'Orbitron', sans-serif; text-transform: uppercase;">
                 JOUEUR : <span style="color: var(--primary-color);">${pseudoValue}</span>
+                <div style="font-size: 0.9rem; color: #94a3b8; margin-top: 5px;">MODE ${currentMode.toUpperCase()}</div>
             </div>
         </div>
 
@@ -116,12 +149,7 @@ function finishgame() {
             
             <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;">
             
-            <div style="display: flex; justify-content: space-between; text-align: left; font-size: 1.1rem;">
-                <div style="color: #f43f5e;">❌ Ratés : <strong>${misses}</strong></div>
-                <div style="color: #10b981;">🎯 Précision : <strong>${precision}%</strong></div>
-            </div>
-            
-            <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;">
+            ${precisionStatsHTML}
 
             <div style="display: flex; justify-content: space-between; text-align: left; font-size: 1.1rem; color: #cbd5e1;">
                 <div>⏱️ Temps : <strong>${temps}s</strong></div>
@@ -135,3 +163,6 @@ function finishgame() {
         </div>
     `;
 }
+
+
+

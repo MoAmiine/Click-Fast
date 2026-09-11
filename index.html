@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Fast! - Prototype</title>
-    <!-- Police d'écriture style Arcade/Gamer -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+
     <style>
-        /* --- Variables globales & Reset --- */
         :root {
             --bg-color: #0b0f19;
             --text-color: #e2e8f0;
@@ -45,7 +45,6 @@
             letter-spacing: 2px;
         }
 
-        /* --- Vues (Sections) --- */
         section {
             background: rgba(255, 255, 255, 0.03);
             padding: 40px;
@@ -57,8 +56,8 @@
             max-width: 600px;
         }
 
-        /* --- Formulaires & Boutons --- */
-        input, select {
+        input,
+        select {
             width: 100%;
             padding: 15px;
             margin-bottom: 20px;
@@ -71,7 +70,8 @@
             transition: all 0.3s ease;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             box-shadow: var(--primary-glow);
         }
 
@@ -97,7 +97,6 @@
             background: #0284c7;
         }
 
-        /* --- Arène de jeu & Quadrillage --- */
         #view-game {
             background: transparent;
             border: none;
@@ -113,58 +112,61 @@
         }
 
         #arena {
-            background-color: #0f172a; /* Fond de l'arène */
-            /* Génération du quadrillage (Grid) en CSS */
-            background-image: 
+            background-color: #0f172a;
+            /* Fond de l'arène */
+            background-image:
                 linear-gradient(var(--grid-color) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 50px 50px; /* Taille des cases du quadrillage */
-            
+            background-size: 50px 50px;
+            /* Taille des cases du quadrillage */
+
             border: 2px solid var(--primary-color);
             border-radius: 12px;
             box-shadow: var(--primary-glow);
             overflow: hidden;
             margin: 0 auto;
-            cursor: crosshair; /* Curseur de visée */
+            cursor: crosshair;
+            /* Curseur de visée */
         }
 
-        /* Design de la cible (placeholder, la taille sera gérée par JS) */
         #target {
             background: radial-gradient(circle, #fb7185 10%, var(--danger-color) 80%);
             border: 2px solid #fff;
-            border-radius: 50%; /* Cible ronde */
+            border-radius: 50%;
+            /* Cible ronde */
             box-shadow: var(--danger-glow);
             transition: transform 0.05s;
         }
 
-        /* Effet de clic sur la cible */
         #target:active {
             transform: scale(0.8);
         }
-
     </style>
 </head>
+
 <body>
 
-    <!-- Vue Accueil -->
     <section id="view-home">
         <h1>CLICK FAST!</h1>
         <p style="margin-bottom: 30px; color: #94a3b8;">Testez vos réflexes et votre précision.</p>
         <button type="button" id="btn-go-config">Jouer</button>
     </section>
 
-    <!-- Vue Configuration -->
     <section id="view-config" style="display: none;">
         <h1>Configuration</h1>
         <input type="text" id="pseudo" minlength="2" maxlength="20" placeholder="Entrez votre pseudo" required>
-        
+
         <select id="select-time">
             <option value="10">10 secondes</option>
             <option value="20">20 secondes</option>
             <option value="30">30 secondes</option>
         </select>
         
-        <!-- J'ai ajouté le sélecteur de difficulté requis dans votre brief -->
+        <select id="select-mode">
+            <option value="classique" selected>Mode Classique</option>
+            <option value="precision">Mode Précision</option>
+        </select>
+
         <select id="select-difficulty">
             <option value="facile">Facile (Cible 80px)</option>
             <option value="moyenne" selected>Moyenne (Cible 60px)</option>
@@ -174,26 +176,23 @@
         <button type="button" id="btn-start-game">Lancer la partie</button>
     </section>
 
-    <!-- Vue Arène de jeu -->
     <section id="view-game" style="display: none;">
         <h1 id="countdown">Prêt ?</h1>
 
-        <!-- L'arène est contrainte à 500x500 px -->
         <div id="arena" style="width: 500px; height: 500px; position: relative;">
             <div id="target" style="position: absolute; width: 60px; height: 60px; top: 220px; left: 220px;"></div>
         </div>
     </section>
 
-    <!-- Vue Résultats -->
     <section id="view-results" style="display: none;">
         <h1>Temps écoulé !</h1>
         <p id="score" style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin: 20px 0;"></p>
-        <button type="button" onclick="location.reload()" style="margin-top: 20px;">Rejouer</button>
+        <button type="button" id="btn-replay" style="margin-top: 20px;">Rejouer</button>
     </section>
 
-    <!-- Vue Historique -->
     <section id="view-history" style="display: none;"></section>
 
     <script src="main.js"></script>
 </body>
+
 </html>
