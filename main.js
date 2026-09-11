@@ -117,11 +117,32 @@ function finishgame() {
     let precision = 0;
 
     if (totalscore > 0) {
-        precision = ((count / totalscore) * 100).toFixed(1); // Formule officielle
+        precision = ((count / totalscore) * 100).toFixed(1);
+    }
+
+    const recordKey = `${currentMode}_${currentDifficulty}_${temps}`;
+
+    let records = {};
+    try {
+        const savedRecords = localStorage.getItem('clickFast.records');
+        if (savedRecords) {
+            records = JSON.parse(savedRecords);
+        }
+    } catch (e) {
+        console.error("Erreur");
+        records = {};
+    }
+
+    const ancienRecord = records[recordKey] || 0;
+    let isNewRecord = false;
+
+    if (count > ancienRecord) {
+        isNewRecord = true;
+        records[recordKey] = count;
+        localStorage.setItem('clickFast.records', JSON.stringify(records)); 
     }
 
     let precisionStatsHTML = "";
-
     if (currentMode === "precision") {
         precisionStatsHTML = `
             <div style="display: flex; justify-content: space-between; text-align: left; font-size: 1.1rem;">
@@ -147,6 +168,10 @@ function finishgame() {
                 <span style="color: var(--primary-color); font-size: 4rem; font-weight: bold; line-height: 1;">${count}</span>
             </div>
             
+            <div style="color: #fbbf24; font-size: 0.9rem; margin-bottom: 10px;">
+                (Ancien record : ${ancienRecord})
+            </div>
+            
             <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;">
             
             ${precisionStatsHTML}
@@ -157,11 +182,14 @@ function finishgame() {
             </div>
         </div>
 
-        <!-- Espace prévu pour le record local[cite: 1] -->
         <div id="record-banner" style="color: #fbbf24; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); display: none;">
-            🔥 NOUVEAU RECORD BATTU ! 🔥
+            NOUVEAU RECORD !
         </div>
     `;
+
+    if (isNewRecord) {
+        document.getElementById('record-banner').style.display = 'block';
+    }
 }
 
 
