@@ -10,6 +10,7 @@ const btnGoHistory = document.getElementById('btn-go-history');
 const btnBackHome = document.getElementById('btn-back-home');
 const btnPurgeHistory = document.getElementById('btn-purge-history');
 const historyContainer = document.getElementById('history-container');
+const btnMainMenu = document.getElementById('btn-main-menu');
 
 
 
@@ -23,6 +24,13 @@ if (btnReplay) {
     btnReplay.addEventListener('click', () => {
         document.getElementById('view-results').style.display = 'none';
         document.getElementById('view-config').style.display = 'block';
+    });
+}
+
+if (btnMainMenu) {
+    btnMainMenu.addEventListener('click', () => {
+        document.getElementById('view-results').style.display = 'none';
+        document.getElementById('view-home').style.display = 'block';
     });
 }
 
