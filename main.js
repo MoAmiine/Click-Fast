@@ -148,6 +148,7 @@ function game() {
 
     cible.style.width = `${tailleCible}px`;
     cible.style.height = `${tailleCible}px`;
+    moveTarget();
 
     const countdown = setInterval(() => {
         if (durationValue <= 0) {
