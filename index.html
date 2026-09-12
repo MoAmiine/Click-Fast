@@ -190,9 +190,14 @@
     <section id="view-results" style="display: none;">
         <h1>Temps écoulé !</h1>
         <p id="score" style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin: 20px 0;"></p>
-        <button type="button" id="btn-replay" style="margin-top: 20px;">Rejouer</button>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto;">
+            <button type="button" id="btn-replay">Rejouer</button>
+            <button type="button" id="btn-main-menu" style="background: #64748b;">Menu Principal</button>
+        </div>
     </section>
 
+    
     <section id="view-history" style="display: none;">
         <h2>Dernières Sessions</h2>
 
