@@ -282,12 +282,10 @@ function finishgame() {
             history = JSON.parse(savedHistory);
         }
     } catch (e) {
-        // En cas d'anomalie, le tableau est réinitialisé à vide[cite: 1]
         console.error("Erreur historique, réinitialisation.");
         history = [];
     }
 
-    // Création de l'objet contenant les statistiques de la partie actuelle
     const sessionData = {
         date: new Date().toLocaleDateString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
         pseudo: pseudoValue,
@@ -298,15 +296,12 @@ function finishgame() {
         precision: precision
     };
 
-    // unshift() ajoute la nouvelle partie tout au début du tableau
     history.unshift(sessionData);
 
-    // Si on dépasse 20 sessions, pop() supprime la plus ancienne (la 21e) à la fin du tableau[cite: 1]
     if (history.length > 20) {
         history.pop();
     }
 
-    // Sauvegarde finale dans le navigateur
     localStorage.setItem('clickFast.history', JSON.stringify(history));
 }
 
